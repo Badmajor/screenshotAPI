@@ -5,4 +5,3 @@ RUN pip install aioflask
 COPY . /screenshotAPI
 WORKDIR /screenshotAPI
 RUN pip install -r requirements.txt
-CMD python main.py

@@ -1,0 +1,10 @@
+
+version: "2"
+services:
+    screenshoter:
+        build: .
+        volumes:
+          - .:/screenshotAPI
+        ports:
+          - "8080:80"
+        entrypoint: python main.py

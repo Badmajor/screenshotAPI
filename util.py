@@ -28,7 +28,7 @@ async def save_screenshot(list_url: list[str]) -> int:
         opt.add_argument(f'window-size={w},{h}')
         opt.add_argument('fullpage')
         opt.add_argument('hide-scrollbars')
-        brow = webdriver.Chrome('drivers/chromedriver.exe', chrome_options=opt)
+        brow = webdriver.Chrome('chromedriver.exe', chrome_options=opt)
         brow.get(i)
         brow.save_screenshot(f'ss/{num_task}-{num}.png')
         num += 1
@@ -44,7 +44,7 @@ async def get_list_screenshot(task_id: int):
     return list_ss if len(list_ss) > 0 else 'не верный номер задачи'
 
 
-async def check_staus_task(task_id: int) -> str:
+async def check_status_task(task_id: int) -> str:
     connect = sqlite3.connect(r'tasks.db')
     cursor = connect.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT);")

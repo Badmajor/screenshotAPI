@@ -1,7 +1,7 @@
 from flask import json, request
 
 from app import app
-from util import check_staus_task, get_list_screenshot, save_screenshot
+from util import check_status_task, get_list_screenshot, save_screenshot
 
 
 @app.route('/ch')
@@ -16,7 +16,7 @@ async def post_screenshot():
 
 @app.route('/status/<task_id>/', methods=['GET'])
 async def get_status(task_id):
-    return await check_staus_task(int(task_id))
+    return await check_status_task(int(task_id))
 
 
 @app.route('/screenshot/<task_id>/', methods=['GET'])

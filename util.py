@@ -47,10 +47,11 @@ async def get_list_screenshot(task_id: int):
 async def check_status_task(task_id: int) -> str:
     connect = sqlite3.connect(r'tasks.db')
     cursor = connect.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT);")
+    cursor.execute("CREATE TABLE IF NOT EXISTS tasks(task INT, len INT);")
     connect.commit()
     cursor.execute("SELECT * FROM tasks;")
     a = cursor.fetchall()
+    len_task = a[-1][-1]
     count = len(a)
     if task_id+1 < count:
         return 'Задача готова'
@@ -60,7 +61,7 @@ async def check_status_task(task_id: int) -> str:
         for i in os.listdir(d):
             if int(i.split('-')[0]) == task_id:
                 count_file += 1
-        if count == count_file:
+        if len_task == count_file:
             return 'Задача готова'
         else:
             return 'Задача в процессе'

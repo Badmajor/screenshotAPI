@@ -2,6 +2,7 @@ import os
 import sqlite3
 
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 
 async def get_task(len_list) -> int:
@@ -20,15 +21,14 @@ async def get_task(len_list) -> int:
 
 async def save_screenshot(list_url: list[str]) -> int:
     num_task = await get_task(len(list_url))
-    w, h = 1920, 1080
     num = 0
     for i in list_url:
-        opt = webdriver.ChromeOptions()
-        opt.add_argument('headless')
-        opt.add_argument(f'window-size={w},{h}')
-        opt.add_argument('fullpage')
-        opt.add_argument('hide-scrollbars')
-        brow = webdriver.Chrome('chromedriver.exe', chrome_options=opt)
+        opt = Options()
+        opt.add_argument('--no-sandbox')
+        opt.add_argument('--headless')
+        brow = webdriver.Firefox(
+            options=opt, executable_path=f'{os.path.abspath(os.path.dirname("geckodriver"))}/geckodriver'
+        )
         brow.get(i)
         brow.save_screenshot(f'ss/{num_task}-{num}.png')
         num += 1

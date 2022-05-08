@@ -1,4 +1,7 @@
 import sqlite3
+import logging
+
+logging.basicConfig(filename="sample.log", level=logging.INFO)
 
 
 async def get_num_task():
@@ -64,7 +67,7 @@ async def check_status(num_task: int):
         cursor = connect.cursor()
         cursor.execute("SELECT status from num_task WHERE num=?;", (num_task, ))
         status = cursor.fetchone()
-        print(status)
+        logging.debug(f"{status}")
         connect.close()
         return status
     except Exception as ex:
@@ -77,7 +80,7 @@ async def get_ss_list(num_task: int):
         cursor = connect.cursor()
         cursor.execute("SELECT list from num_task WHERE num=?;", (num_task, ))
         ss_list = cursor.fetchone()
-        print(ss_list)
+        logging.debug(f"{ss_list}")
         connect.close()
         return ss_list
     except Exception as ex:

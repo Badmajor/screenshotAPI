@@ -43,3 +43,6 @@ async def check_status_task(task_id: int):
 
 async def get_list_screenshot(task_id):
     ss_list = await get_ss_list(task_id)
+    if type(ss_list) is list:
+        return ss_list
+    return 'Ошибка'

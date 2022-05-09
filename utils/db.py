@@ -30,6 +30,8 @@ async def change_num_task(num_task: int):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS num_task(num INT);")
+        connect.commit()
         cursor.execute("UPDATE num_task SET num = ?;", (num_task+1, ))
         connect.commit()
         connect.close()
@@ -58,6 +60,8 @@ async def change_status_task(num_task: int, num: int):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT, count INT, list TEXT, status INT);")
+        connect.commit()
         cursor.execute("UPDATE tasks SET status=? WHERE num=?;", (num, num_task))
         connect.commit()
         connect.close()
@@ -71,6 +75,8 @@ async def change_ss_list(num_task: int, ss_list:list):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT, count INT, list TEXT, status INT);")
+        connect.commit()
         cursor.execute("UPDATE tasks SET list=? WHERE num=?;", (str(ss_list), num_task))
         connect.commit()
         connect.close()
@@ -84,6 +90,8 @@ async def check_status(num_task: int):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT, count INT, list TEXT, status INT);")
+        connect.commit()
         cursor.execute("SELECT status FROM tasks WHERE num=?;", (num_task, ))
         status = cursor.fetchone()
         logging.info(f"СТатус{status}")
@@ -100,6 +108,8 @@ async def get_ss_list(num_task: int):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT, count INT, list TEXT, status INT);")
+        connect.commit()
         cursor.execute("SELECT list FROM tasks WHERE num=?;", (num_task, ))
         ss_list = cursor.fetchone()
         connect.close()
@@ -115,6 +125,8 @@ async def get_len_task(num_task: int):
     try:
         connect = sqlite3.connect(path_db)
         cursor = connect.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tasks(num INT, count INT, list TEXT, status INT);")
+        connect.commit()
         cursor.execute("SELECT count FROM tasks WHERE num=?;", (num_task, ))
         len_task = cursor.fetchone()
         connect.close()

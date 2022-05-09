@@ -1,6 +1,9 @@
+import logging
 import os
+from contextlib import suppress
 
-from utils.db import get_num_task, change_num_task, reg_task, change_status_task, check_status, get_ss_list
+from utils.db import get_num_task, change_num_task, reg_task, change_status_task, check_status, get_ss_list, \
+    change_ss_list, get_len_task
 from utils.other import clear_temp, create_zip
 
 from selenium import webdriver
@@ -23,26 +26,28 @@ async def save_ss(url_list: list) -> int or str:
         brow.get(i)
         brow.save_screenshot(f'temp/{num_task}-{num}.png')
         num += 1
+        await change_status_task(num_task, num)
     ss_list = os.listdir('temp')
     await create_zip(num_task, ss_list)
-    await change_status_task(num_task, ss_list)
+    await change_ss_list(num_task, ss_list)
     await change_num_task(num_task)
     return num_task
 
 
 async def check_status_task(task_id: int):
     num_task = await get_num_task()
-    if num_task < task_id:
-        return 'Не верный номер задачи'
     if num_task > task_id:
         return 'Задача готова'
-    if not await check_status(task_id):
-        return 'Задача в процессе'
+    status = await check_status(task_id)
+    len_task = await get_len_task(num_task)
+    if status:
+        return f'Задача в процессе, готово {status} из {len_task} '
     return 'Не верный номер задачи'
 
 
 async def get_list_screenshot(task_id):
     ss_list = await get_ss_list(task_id)
-    if type(ss_list) is list:
+    logging.info(ss_list)
+    if ss_list:
         return ss_list
     return 'Ошибка'
